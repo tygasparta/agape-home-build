@@ -11,11 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AccessibilityRouteImport } from './routes/accessibility'
 import { Route as CareRouteImport } from './routes/care'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ForFamiliesRouteImport } from './routes/for-families'
 import { Route as OurApproachRouteImport } from './routes/our-approach'
 import { Route as OurHomeRouteImport } from './routes/our-home'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -25,6 +27,11 @@ const IndexRoute = IndexRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccessibilityRoute = AccessibilityRouteImport.update({
+  id: '/accessibility',
+  path: '/accessibility',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CareRoute = CareRouteImport.update({
@@ -52,73 +59,92 @@ const OurHomeRoute = OurHomeRouteImport.update({
   path: '/our-home',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/accessibility': typeof AccessibilityRoute
   '/care': typeof CareRoute
   '/contact': typeof ContactRoute
   '/for-families': typeof ForFamiliesRoute
   '/our-approach': typeof OurApproachRoute
   '/our-home': typeof OurHomeRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/accessibility': typeof AccessibilityRoute
   '/care': typeof CareRoute
   '/contact': typeof ContactRoute
   '/for-families': typeof ForFamiliesRoute
   '/our-approach': typeof OurApproachRoute
   '/our-home': typeof OurHomeRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/accessibility': typeof AccessibilityRoute
   '/care': typeof CareRoute
   '/contact': typeof ContactRoute
   '/for-families': typeof ForFamiliesRoute
   '/our-approach': typeof OurApproachRoute
   '/our-home': typeof OurHomeRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/accessibility'
     | '/care'
     | '/contact'
     | '/for-families'
     | '/our-approach'
     | '/our-home'
+    | '/privacy-policy'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/accessibility'
     | '/care'
     | '/contact'
     | '/for-families'
     | '/our-approach'
     | '/our-home'
+    | '/privacy-policy'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/accessibility'
     | '/care'
     | '/contact'
     | '/for-families'
     | '/our-approach'
     | '/our-home'
+    | '/privacy-policy'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AccessibilityRoute: typeof AccessibilityRoute
   CareRoute: typeof CareRoute
   ContactRoute: typeof ContactRoute
   ForFamiliesRoute: typeof ForFamiliesRoute
   OurApproachRoute: typeof OurApproachRoute
   OurHomeRoute: typeof OurHomeRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -135,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/accessibility': {
+      id: '/accessibility'
+      path: '/accessibility'
+      fullPath: '/accessibility'
+      preLoaderRoute: typeof AccessibilityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/care': {
@@ -172,17 +205,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OurHomeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AccessibilityRoute: AccessibilityRoute,
   CareRoute: CareRoute,
   ContactRoute: ContactRoute,
   ForFamiliesRoute: ForFamiliesRoute,
   OurApproachRoute: OurApproachRoute,
   OurHomeRoute: OurHomeRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
