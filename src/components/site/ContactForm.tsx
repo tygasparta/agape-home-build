@@ -1,7 +1,9 @@
 import { useState, type FormEvent } from "react";
 import { z } from "zod";
-import { CheckCircle2, Loader2 } from "lucide-react";
 import { Field } from "./Field";
+import { EmailHandoffNotice } from "./EmailHandoffNotice";
+import { submitByEmail } from "@/lib/mailto";
+import { SITE } from "@/lib/site";
 import { buttonStyles } from "./Buttons";
 
 const phoneRegex = /^[+]?[\d\s().-]{7,20}$/;
@@ -23,9 +25,10 @@ type Errors = Partial<Record<keyof z.infer<typeof contactSchema>, string>>;
 
 export function ContactForm() {
   const [errors, setErrors] = useState<Errors>({});
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "handed-off">("idle");
+  const [handoffBody, setHandoffBody] = useState("");
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+  function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries());
@@ -42,30 +45,25 @@ export function ContactForm() {
     }
 
     setErrors({});
-    setStatus("loading");
-    try {
-      // Submission target placeholder — connect to a backend when available.
-      await new Promise((resolve) => setTimeout(resolve, 700));
-      setStatus("success");
-      form.reset();
-    } catch {
-      setStatus("error");
-    }
+    const v = parsed.data;
+    const { body } = submitByEmail(v.subject, [
+      { label: "Name", value: v.name },
+      { label: "Email", value: v.email },
+      { label: "Phone", value: v.phone ?? "" },
+      { label: "Message", value: v.message },
+    ]);
+    setHandoffBody(body);
+    setStatus("handed-off");
+    form.reset();
   }
 
-  if (status === "success") {
+  if (status === "handed-off") {
     return (
-      <div className="border border-border bg-white p-8 sm:p-10" role="status" aria-live="polite">
-        <CheckCircle2 className="size-7 text-secondary" aria-hidden="true" />
-        <h3 className="mt-5 text-2xl">Message received</h3>
-        <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted-foreground">
-          Thank you for reaching out to Agape Home Assisted Living. Our team will review your message
-          and contact you.
-        </p>
-        <button type="button" onClick={() => setStatus("idle")} className={`${buttonStyles.outline} mt-7`}>
-          Send another message
-        </button>
-      </div>
+      <EmailHandoffNotice
+        body={handoffBody}
+        onReset={() => setStatus("idle")}
+        resetLabel="Write another message"
+      />
     );
   }
 
@@ -102,16 +100,13 @@ export function ContactForm() {
         </div>
       </div>
 
-      {status === "error" ? (
-        <p role="alert" className="mt-6 border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive">
-          We couldn't send your message. Please try again, or email us directly.
-        </p>
-      ) : null}
-
-      <button type="submit" disabled={status === "loading"} className={`${buttonStyles.primary} mt-8 w-full sm:w-auto`}>
-        {status === "loading" ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : null}
-        {status === "loading" ? "Sending…" : "Send Message"}
+      <button type="submit" className={`${buttonStyles.primary} mt-8 w-full sm:w-auto`}>
+        Open Email to Send
       </button>
+      <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+        This opens your email app with your message filled in — you'll need to press send there.
+        Prefer to talk? Call {SITE.phone}.
+      </p>
     </form>
   );
 }

@@ -1,7 +1,9 @@
 import { useState, type FormEvent } from "react";
 import { z } from "zod";
-import { CheckCircle2, Loader2 } from "lucide-react";
 import { Field } from "./Field";
+import { EmailHandoffNotice } from "./EmailHandoffNotice";
+import { submitByEmail } from "@/lib/mailto";
+import { SITE } from "@/lib/site";
 import { buttonStyles } from "./Buttons";
 
 const phoneRegex = /^[+]?[\d\s().-]{7,20}$/;
@@ -25,9 +27,10 @@ type Errors = Partial<Record<keyof z.infer<typeof visitSchema>, string>>;
 
 export function VisitRequestForm() {
   const [errors, setErrors] = useState<Errors>({});
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "handed-off">("idle");
+  const [handoffBody, setHandoffBody] = useState("");
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+  function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries());
@@ -45,30 +48,28 @@ export function VisitRequestForm() {
     }
 
     setErrors({});
-    setStatus("loading");
-    try {
-      // Submission target placeholder — connect to a backend when available.
-      await new Promise((resolve) => setTimeout(resolve, 700));
-      setStatus("success");
-      form.reset();
-    } catch {
-      setStatus("error");
-    }
+    const v = parsed.data;
+    const { body } = submitByEmail(`Visit request — ${v.fullName}`, [
+      { label: "Name", value: v.fullName },
+      { label: "Phone", value: v.phone },
+      { label: "Email", value: v.email },
+      { label: "Relationship to resident", value: v.relationship },
+      { label: "Preferred date", value: v.date },
+      { label: "Preferred time", value: v.time },
+      { label: "Message", value: v.message ?? "" },
+    ]);
+    setHandoffBody(body);
+    setStatus("handed-off");
+    form.reset();
   }
 
-  if (status === "success") {
+  if (status === "handed-off") {
     return (
-      <div className="border border-border bg-white p-6 sm:p-8" role="status" aria-live="polite">
-        <CheckCircle2 className="size-6 text-secondary" aria-hidden="true" />
-        <h3 className="mt-4 text-xl">Thank you for reaching out</h3>
-        <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">
-          Thank you for reaching out to Agape Home Assisted Living. Our team will review your request
-          and contact you regarding your visit.
-        </p>
-        <button type="button" onClick={() => setStatus("idle")} className={`${buttonStyles.outline} mt-6`}>
-          Submit another request
-        </button>
-      </div>
+      <EmailHandoffNotice
+        body={handoffBody}
+        onReset={() => setStatus("idle")}
+        resetLabel="Start another request"
+      />
     );
   }
 
@@ -183,16 +184,13 @@ export function VisitRequestForm() {
         </div>
       </div>
 
-      {status === "error" ? (
-        <p role="alert" className="mt-6 border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive">
-          We couldn't send your request. Please try again, or email us directly.
-        </p>
-      ) : null}
-
-      <button type="submit" disabled={status === "loading"} className={`${buttonStyles.primary} mt-6 w-full sm:w-auto`}>
-        {status === "loading" ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : null}
-        {status === "loading" ? "Sending…" : "Request a Visit"}
+      <button type="submit" className={`${buttonStyles.primary} mt-6 w-full sm:w-auto`}>
+        Open Email to Send
       </button>
+      <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+        This opens your email app with the details filled in — you'll need to press send there.
+        Prefer to talk? Call {SITE.phone}.
+      </p>
     </form>
   );
 }
