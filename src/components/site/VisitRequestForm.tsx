@@ -58,14 +58,14 @@ export function VisitRequestForm() {
 
   if (status === "success") {
     return (
-      <div className="border border-border bg-white p-8 sm:p-10" role="status" aria-live="polite">
-        <CheckCircle2 className="size-7 text-secondary" aria-hidden="true" />
-        <h3 className="mt-5 text-2xl">Thank you for reaching out</h3>
-        <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted-foreground">
+      <div className="border border-border bg-white p-6 sm:p-8" role="status" aria-live="polite">
+        <CheckCircle2 className="size-6 text-secondary" aria-hidden="true" />
+        <h3 className="mt-4 text-xl">Thank you for reaching out</h3>
+        <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">
           Thank you for reaching out to Agape Home Assisted Living. Our team will review your request
           and contact you regarding your visit.
         </p>
-        <button type="button" onClick={() => setStatus("idle")} className={`${buttonStyles.outline} mt-7`}>
+        <button type="button" onClick={() => setStatus("idle")} className={`${buttonStyles.outline} mt-6`}>
           Submit another request
         </button>
       </div>
@@ -73,13 +73,13 @@ export function VisitRequestForm() {
   }
 
   return (
-    <form noValidate onSubmit={onSubmit} className="border border-border bg-white p-6 sm:p-10">
-      <h3 className="text-2xl">Schedule a Visit</h3>
-      <p className="mt-2 text-sm text-muted-foreground">
+    <form noValidate onSubmit={onSubmit} className="border border-border bg-white p-5 sm:p-7">
+      <h3 className="text-xl">Schedule a Visit</h3>
+      <p className="mt-1.5 text-[0.8125rem] text-muted-foreground">
         Share a few details and we'll follow up about arranging a time to visit.
       </p>
 
-      <div className="mt-8 grid gap-5 sm:grid-cols-2">
+      <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <Field label="Full Name" required error={errors.fullName}>
           {({ id, describedBy, invalid, className }) => (
             <input
@@ -172,7 +172,7 @@ export function VisitRequestForm() {
               <textarea
                 id={id}
                 name="message"
-                rows={5}
+                rows={3}
                 maxLength={1000}
                 aria-invalid={invalid}
                 aria-describedby={describedBy}
@@ -189,7 +189,7 @@ export function VisitRequestForm() {
         </p>
       ) : null}
 
-      <button type="submit" disabled={status === "loading"} className={`${buttonStyles.primary} mt-8 w-full sm:w-auto`}>
+      <button type="submit" disabled={status === "loading"} className={`${buttonStyles.primary} mt-6 w-full sm:w-auto`}>
         {status === "loading" ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : null}
         {status === "loading" ? "Sending…" : "Request a Visit"}
       </button>

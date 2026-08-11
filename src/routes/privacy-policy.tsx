@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageMeta } from "@/lib/seo";
 import { SITE } from "@/lib/site";
 
 const title = "Privacy Policy | Agape Home Assisted Living";
@@ -6,17 +7,7 @@ const description =
   "How Agape Home Assisted Living in Laveen, Arizona handles information submitted through this website.";
 
 export const Route = createFileRoute("/privacy-policy")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:url", content: "/privacy-policy" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: "/privacy-policy" }],
-  }),
+  head: () => pageMeta({ title, description, path: "/privacy-policy", index: false }),
   component: PrivacyPage,
 });
 

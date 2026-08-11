@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageMeta } from "@/lib/seo";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
@@ -12,17 +13,7 @@ const description =
   "Personalized care and genuine connection: how Agape Home Assisted Living in Laveen, Arizona gets to know each resident and supports independence and dignity.";
 
 export const Route = createFileRoute("/our-approach")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:url", content: "/our-approach" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: "/our-approach" }],
-  }),
+  head: () => pageMeta({ title, description, path: "/our-approach" }),
   component: ApproachPage,
 });
 
@@ -78,7 +69,7 @@ function ApproachPage() {
           <ol className="mt-14 grid gap-x-12 gap-y-12 sm:grid-cols-2">
             {steps.map((step, i) => (
               <Reveal as="li" key={step.number} delay={i * 80} className="border-t border-border pt-6">
-                <span className="font-serif text-3xl text-gold">{step.number}</span>
+                <span className="font-display text-3xl text-gold">{step.number}</span>
                 <h3 className="mt-4 text-xl">{step.title}</h3>
                 <p className="mt-3 max-w-md text-[0.9375rem] leading-relaxed text-muted-foreground">
                   {step.text}

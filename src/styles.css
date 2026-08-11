@@ -7,7 +7,7 @@
 /*
  * Agape Home Assisted Living — design system.
  * Brand: deep blue + warm neutral + sparing gold accent.
- * Headings: Playfair Display (serif). Body: Inter.
+ * Headings/wordmark: Archivo Black. Body: Arimo.
  */
 
 @theme inline {
@@ -19,8 +19,9 @@
   --radius-3xl: calc(var(--radius) + 14px);
   --radius-4xl: calc(var(--radius) + 18px);
 
-  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  /* Display face is weight 400 only — never ask for bold, it will not exist. */
+  --font-display: "Archivo Black", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Arimo", Arial, ui-sans-serif, system-ui, sans-serif;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -47,6 +48,9 @@
   --color-mist: var(--mist);
   --color-gold: var(--gold);
   --color-ink: var(--ink);
+
+  /* Single easing curve for the whole site — decelerating, never overshooting. */
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 
   --shadow-soft: 0 1px 2px oklch(0.36 0.11 262 / 0.04), 0 12px 32px -18px oklch(0.36 0.11 262 / 0.28);
   --shadow-lift: 0 2px 4px oklch(0.36 0.11 262 / 0.05), 0 24px 48px -24px oklch(0.36 0.11 262 / 0.3);
@@ -78,8 +82,8 @@
   --sand: oklch(0.955 0.009 90);
 
   --muted: oklch(0.958 0.016 245);
-  /* #64748B */
-  --muted-foreground: oklch(0.554 0.036 257);
+  /* Solid black — body copy reads at full strength rather than as grey. */
+  --muted-foreground: oklch(0 0 0);
 
   --accent: oklch(0.958 0.016 245);
   --accent-foreground: oklch(0.395 0.108 259);
@@ -118,9 +122,9 @@
   h2,
   h3,
   h4 {
-    font-family: var(--font-serif);
-    font-weight: 500;
-    letter-spacing: -0.01em;
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
     color: var(--color-primary);
   }
 
@@ -169,15 +173,130 @@
   }
 }
 
+/* Primary-nav link: gold rule grows from the left on hover, stays put when active. */
+@utility nav-underline {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.5rem;
+    height: 2px;
+    width: 0;
+    background: var(--color-gold);
+    transition: width 350ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  &:hover::after,
+  &[data-active="true"]::after {
+    width: 100%;
+  }
+}
+
+/*
+ * Motion system.
+ *
+ * Two mechanisms, deliberately kept separate:
+ *   - `reveal*`  — scroll-triggered, driven by IntersectionObserver in <Reveal>.
+ *   - `enter-*`  — mount animations for above-the-fold content, pure CSS so it
+ *                  runs on first paint instead of waiting for hydration.
+ *
+ * Everything is quiet and slow-ish on purpose: this is a care home, not a
+ * product launch. Nothing bounces, nothing slides sideways.
+ */
+
+@keyframes enter-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes enter-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes enter-settle {
+  from {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* `both` fill mode holds the from-state during animation-delay, so staggered
+   items stay hidden until their turn rather than flashing in first. */
+@utility enter-rise {
+  animation: enter-rise 700ms var(--ease-soft) both;
+}
+
+@utility enter-fade {
+  animation: enter-fade 600ms var(--ease-soft) both;
+}
+
+/* Photographs ease down from a slight overscale — reads as settling into place. */
+@utility enter-settle {
+  animation: enter-settle 1000ms var(--ease-soft) both;
+}
+
+/* Route change: content cross-fades rather than snapping. */
+@utility page-enter {
+  animation: enter-fade 350ms var(--ease-soft) both;
+}
+
+/* Full-screen menu: covers fast, so page content behind it doesn't show
+   through while the panel's own items are still staggering in. */
+@utility panel-enter {
+  animation: enter-fade 200ms linear both;
+}
+
 @utility reveal {
   opacity: 0;
   transform: translateY(18px);
   transition:
-    opacity 900ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 700ms var(--ease-soft),
+    transform 700ms var(--ease-soft);
 }
 
+@utility reveal-settle {
+  opacity: 0;
+  transform: scale(1.03);
+  transition:
+    opacity 900ms var(--ease-soft),
+    transform 900ms var(--ease-soft);
+}
+
+@utility reveal-fade {
+  opacity: 0;
+  transition: opacity 700ms var(--ease-soft);
+}
+
+/* Declared last so it wins over every reveal-* initial state above. */
 @utility reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
+/*
+ * Failsafe. The reveal states above are only safe to apply if something will
+ * later remove them — that something is JS. If the bundle fails, is blocked, or
+ * never runs, the observer never fires and every revealed section would stay at
+ * opacity 0, leaving most of the site invisible. The `js` class is set by an
+ * inline head script, so this holds until JS has actually proven it is alive.
+ * Higher specificity than the single-class utilities, so it wins.
+ */
+html:not(.js) :is(.reveal, .reveal-settle, .reveal-fade) {
   opacity: 1;
   transform: none;
 }
@@ -191,5 +310,10 @@
   *::after {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
+    /* Delays must be neutralised too — otherwise staggered content sits
+       invisible for its full delay before appearing instantly. */
+    animation-delay: 0.001ms !important;
+    transition-delay: 0.001ms !important;
+    animation-iteration-count: 1 !important;
   }
 }

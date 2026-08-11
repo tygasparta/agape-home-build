@@ -8,7 +8,7 @@ export function Footer() {
     <footer className="mt-24 border-t border-border bg-primary text-white">
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:px-8 lg:grid-cols-[1.4fr_1fr_1fr]">
         <div className="max-w-sm">
-          <Logo tone="light" />
+          <Logo tone="light" className="h-16" />
           <p className="mt-6 text-sm leading-relaxed text-white/70">
             Compassionate assisted living in Laveen, Arizona, where residents are treated with
             dignity, respect and genuine care.

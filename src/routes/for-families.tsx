@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageMeta } from "@/lib/seo";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
@@ -12,17 +13,7 @@ const description =
   "Choosing assisted living in Laveen, Arizona is a big decision. Learn how Agape Home partners with families through communication, professionalism and dignity.";
 
 export const Route = createFileRoute("/for-families")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:url", content: "/for-families" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: "/for-families" }],
-  }),
+  head: () => pageMeta({ title, description, path: "/for-families" }),
   component: FamiliesPage,
 });
 

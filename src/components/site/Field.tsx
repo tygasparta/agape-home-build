@@ -1,7 +1,8 @@
 import { useId, type ReactNode } from "react";
 
+// min-h-11 keeps the tap target at ~44px even though the padding is tight.
 const fieldBase =
-  "w-full border border-input bg-white px-4 py-3 text-[0.9375rem] text-ink transition-colors placeholder:text-muted-foreground/70 focus:border-secondary focus:outline-none aria-[invalid=true]:border-destructive";
+  "w-full min-h-11 border border-input bg-white px-3.5 py-2 text-sm text-ink transition-colors placeholder:text-muted-foreground/70 focus:border-secondary focus:outline-none aria-[invalid=true]:border-destructive";
 
 export function Field({
   label,
@@ -27,8 +28,8 @@ export function Field({
   const describedBy = [error ? errorId : null, hint ? hintId : null].filter(Boolean).join(" ") || undefined;
 
   return (
-    <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="text-sm font-medium text-ink">
+    <div className="flex flex-col gap-1.5">
+      <label htmlFor={id} className="text-[0.8125rem] font-medium text-ink">
         {label}
         {required ? (
           <span className="ml-1 text-muted-foreground" aria-hidden="true">

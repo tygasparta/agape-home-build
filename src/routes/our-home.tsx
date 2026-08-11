@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageMeta } from "@/lib/seo";
 import { PageHero } from "@/components/site/PageHero";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { ImageGallery, type GalleryItem } from "@/components/site/ImageGallery";
@@ -15,17 +16,7 @@ const description =
   "See the warm residential environment at Agape Home Assisted Living in Laveen, Arizona — common areas, living spaces, dining and shaded outdoor areas.";
 
 export const Route = createFileRoute("/our-home")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:url", content: "/our-home" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: "/our-home" }],
-  }),
+  head: () => pageMeta({ title, description, path: "/our-home" }),
   component: OurHomePage,
 });
 

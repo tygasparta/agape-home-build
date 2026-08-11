@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageMeta } from "@/lib/seo";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
@@ -7,20 +8,10 @@ import { CARE_DISCLAIMER } from "@/lib/site";
 
 const title = "Care & Services | Assisted Living Home in Laveen, AZ";
 const description =
-  "Resident-centered assisted living support at Agape Home in Laveen, Arizona: personalized assistance, daily living support, comfortable residential living and family communication.";
+  "Resident-centered assisted living at Agape Home in Laveen, Arizona: personalized daily support, comfortable residential living and open family communication.";
 
 export const Route = createFileRoute("/care")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:url", content: "/care" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: "/care" }],
-  }),
+  head: () => pageMeta({ title, description, path: "/care" }),
   component: CarePage,
 });
 

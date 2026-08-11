@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { HeartHandshake, Home, UserRound, Users, ArrowRight, MapPin } from "lucide-react";
+import { pageMeta } from "@/lib/seo";
+import { HeartHandshake, Home, UserRound, Users, ArrowRight } from "lucide-react";
 import heroImg from "@/assets/hero-care.jpg";
 import introImg from "@/assets/home-living.jpg";
 import { LinkButton } from "@/components/site/Buttons";
-import { Reveal } from "@/components/site/Reveal";
+import { Reveal, Rise } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { ScheduleVisitSection } from "@/components/site/ScheduleVisitSection";
 import { LocationSection } from "@/components/site/LocationSection";
@@ -11,20 +12,10 @@ import { CARE_DISCLAIMER } from "@/lib/site";
 
 const title = "Assisted Living in Laveen, AZ | Agape Home Assisted Living";
 const description =
-  "Agape Home Assisted Living is a residential assisted living home in Laveen, Arizona providing compassionate, resident-centered care where care feels like family.";
+  "Agape Home is a residential assisted living home in Laveen, Arizona, providing compassionate, resident-centered care where care feels like family.";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:url", content: "/" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: "/" }],
-  }),
+  head: () => pageMeta({ title, description, path: "/" }),
   component: Index,
 });
 
@@ -67,30 +58,36 @@ function Index() {
       <section className="border-b border-border bg-background">
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-14 sm:px-8 sm:py-20 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-24">
           <div>
-            <p className="eyebrow">Compassionate Assisted Living in Laveen, Arizona</p>
-            <h1 className="mt-6 text-balance text-[2.5rem] leading-[1.08] sm:text-6xl lg:text-[4rem]">
+            <Rise as="p" delay={80} className="eyebrow">
+              Compassionate Assisted Living in Laveen, Arizona
+            </Rise>
+            <Rise
+              as="h1"
+              delay={180}
+              className="mt-6 text-balance text-[2.5rem] leading-[1.08] sm:text-6xl lg:text-[4rem]"
+            >
               Where Care Feels Like Family
-            </h1>
-            <p className="mt-6 max-w-xl text-[1.0625rem] leading-relaxed text-muted-foreground sm:text-lg">
+            </Rise>
+            <Rise
+              as="p"
+              delay={300}
+              className="mt-6 max-w-xl text-[1.0625rem] leading-relaxed text-muted-foreground sm:text-lg"
+            >
               At Agape Home Assisted Living, we provide compassionate, respectful care in a warm
               residential environment where every resident is valued, heard, supported, and treated
               with dignity.
-            </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            </Rise>
+            <Rise delay={420} className="mt-9 flex flex-col gap-3 sm:flex-row">
               <LinkButton to="/contact" hash="schedule">
                 Schedule a Visit
               </LinkButton>
               <LinkButton to="/our-home" variant="outline">
                 Learn About Our Home
               </LinkButton>
-            </div>
-            <p className="mt-9 flex items-center gap-2 border-t border-border pt-6 text-sm text-muted-foreground">
-              <MapPin className="size-4 text-secondary" aria-hidden="true" />
-              Laveen, Arizona
-            </p>
+            </Rise>
           </div>
 
-          <div className="lg:justify-self-end">
+          <Rise variant="settle" delay={220} className="lg:justify-self-end">
             <img
               src={heroImg}
               alt="A caregiver sitting beside an older woman in a sunlit living room, holding her hand and talking warmly"
@@ -99,15 +96,24 @@ function Index() {
               fetchPriority="high"
               className="aspect-[4/3] w-full object-cover"
             />
-          </div>
+          </Rise>
         </div>
       </section>
 
       <section aria-label="Why families choose Agape Home" className="border-b border-border bg-mist/60">
         <ul className="mx-auto grid max-w-7xl gap-px bg-border px-0 sm:grid-cols-2 lg:grid-cols-4">
           {trustPoints.map((point, i) => (
-            <Reveal as="li" key={point.title} delay={i * 80} className="bg-mist/60 px-6 py-10 sm:px-8">
-              <point.icon className="size-6 text-secondary" strokeWidth={1.4} aria-hidden="true" />
+            <Reveal
+              as="li"
+              key={point.title}
+              delay={i * 80}
+              className="group bg-mist/60 px-6 py-10 transition-colors duration-300 hover:bg-mist sm:px-8"
+            >
+              <point.icon
+                className="size-6 text-secondary transition-transform duration-500 ease-soft group-hover:-translate-y-0.5"
+                strokeWidth={1.4}
+                aria-hidden="true"
+              />
               <h2 className="mt-5 text-lg">{point.title}</h2>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{point.text}</p>
             </Reveal>
@@ -117,7 +123,7 @@ function Index() {
 
       <section className="py-20 sm:py-24">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-2 lg:gap-16">
-          <Reveal className="order-2 lg:order-1">
+          <Reveal variant="settle" className="order-2 lg:order-1">
             <img
               src={introImg}
               alt="Warm living room with soft sofas and natural light inside a residential care home"
@@ -167,7 +173,7 @@ function Index() {
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <SectionHeading eyebrow="Our Mission" title="Care rooted in respect and relationship" />
             <Reveal delay={80} className="space-y-5 text-[1.0625rem] leading-relaxed text-muted-foreground lg:pt-2">
-              <p className="border-l border-gold pl-6 font-serif text-xl leading-relaxed text-primary sm:text-2xl">
+              <p className="border-l border-gold pl-6 text-xl leading-relaxed text-primary sm:text-2xl">
                 Our mission is to provide compassionate and respectful assisted living services in a
                 home environment where residents feel valued, heard, supported, and cared for.
               </p>
@@ -185,7 +191,12 @@ function Index() {
           <SectionHeading eyebrow="Our Values" title="What guides us every day" />
           <ul className="mt-14 grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
             {values.map((value, i) => (
-              <Reveal as="li" key={value.title} delay={i * 60} className="border-t border-border pt-6">
+              <Reveal
+                as="li"
+                key={value.title}
+                delay={i * 60}
+                className="group border-t border-border pt-6 transition-colors duration-500 hover:border-gold"
+              >
                 <h3 className="text-xl">{value.title}</h3>
                 <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted-foreground">{value.text}</p>
               </Reveal>

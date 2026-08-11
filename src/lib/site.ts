@@ -1,4 +1,12 @@
 export const SITE = {
+  /**
+   * ⚠️ CHANGE THIS BEFORE LAUNCH — placeholder, the domain is not registered yet.
+   *
+   * Canonical origin, no trailing slash. Every canonical tag, og:url, sitemap
+   * entry and JSON-LD url is built from this one value, so updating it here
+   * updates the whole site. After changing it, re-run `bun run sitemap`.
+   */
+  url: "https://www.agapehomeassistedliving.com",
   name: "Agape Home Assisted Living",
   tagline: "Where Care Feels Like Family",
   street: "4462 W Ian Dr",

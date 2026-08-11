@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -14,7 +15,8 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { buttonStyles } from "@/components/site/Buttons";
-import { SITE } from "@/lib/site";
+import { SITE, MAPS_DIRECTIONS } from "@/lib/site";
+import { absoluteUrl, OG_IMAGE } from "@/lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -80,36 +82,74 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:site_name", content: SITE.name },
       { property: "og:type", content: "website" },
+      { property: "og:locale", content: "en_US" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#164A8A" },
+      // Local-intent signals for "assisted living near me" style queries.
+      { name: "geo.region", content: "US-AZ" },
+      { name: "geo.placename", content: `${SITE.city}, ${SITE.state}` },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.ico", sizes: "any" },
+      { rel: "icon", href: "/favicon-32.png", type: "image/png", sizes: "32x32" },
+      { rel: "icon", href: "/favicon-16.png", type: "image/png", sizes: "16x16" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@400;500;600&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Archivo+Black&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap",
       },
     ],
     scripts: [
       {
+        // Runs before first paint, so scroll-reveal only arms itself when JS is
+        // alive to disarm it. Without this, a failed bundle hides the site.
+        children: "document.documentElement.classList.add('js')",
+      },
+      {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "AssistedLiving",
-          name: SITE.name,
-          slogan: SITE.tagline,
-          email: SITE.email,
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: SITE.street,
-            addressLocality: SITE.city,
-            addressRegion: SITE.state,
-            addressCountry: "US",
-          },
-          areaServed: "Laveen, Arizona",
+          "@graph": [
+            {
+              "@type": "AssistedLiving",
+              "@id": `${SITE.url}/#organization`,
+              name: SITE.name,
+              slogan: SITE.tagline,
+              description:
+                "Residential assisted living home in Laveen, Arizona providing compassionate, resident-centered care.",
+              url: SITE.url,
+              logo: absoluteUrl("/logo.png"),
+              image: absoluteUrl(OG_IMAGE),
+              email: SITE.email,
+              // Only emit telephone once a real number exists — an empty or
+              // invented value is worse than omitting the property.
+              ...(SITE.phone ? { telephone: SITE.phone } : {}),
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: SITE.street,
+                addressLocality: SITE.city,
+                addressRegion: SITE.state,
+                addressCountry: "US",
+              },
+              hasMap: MAPS_DIRECTIONS,
+              areaServed: {
+                "@type": "City",
+                name: "Laveen",
+                containedInPlace: { "@type": "State", name: "Arizona" },
+              },
+            },
+            {
+              "@type": "WebSite",
+              "@id": `${SITE.url}/#website`,
+              url: SITE.url,
+              name: SITE.name,
+              inLanguage: "en-US",
+              publisher: { "@id": `${SITE.url}/#organization` },
+            },
+          ],
         }),
       },
     ],
@@ -136,6 +176,7 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -147,8 +188,11 @@ function RootComponent() {
       </a>
       <Header />
       <main id="main">
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
+        {/* Keyed on pathname so each navigation replays the cross-fade. */}
+        <div key={pathname} className="page-enter">
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+        </div>
       </main>
       <Footer />
     </QueryClientProvider>

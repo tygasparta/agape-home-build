@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageMeta } from "@/lib/seo";
 import { SITE } from "@/lib/site";
 
 const title = "Accessibility | Agape Home Assisted Living";
@@ -6,17 +7,7 @@ const description =
   "Agape Home Assisted Living is committed to keeping this website usable and accessible for everyone, including visitors using assistive technology.";
 
 export const Route = createFileRoute("/accessibility")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:url", content: "/accessibility" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: "/accessibility" }],
-  }),
+  head: () => pageMeta({ title, description, path: "/accessibility", index: false }),
   component: AccessibilityPage,
 });
 

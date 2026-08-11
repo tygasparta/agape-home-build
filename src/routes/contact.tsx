@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageMeta } from "@/lib/seo";
 import { Mail, MapPin, ExternalLink } from "lucide-react";
 import { ContactForm } from "@/components/site/ContactForm";
 import { Reveal } from "@/components/site/Reveal";
@@ -12,17 +13,7 @@ const description =
   "Contact Agape Home Assisted Living in Laveen, Arizona. Send a message, get directions to 4462 W Ian Dr, or request a visit to our residential care home.";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:url", content: "/contact" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: "/contact" }],
-  }),
+  head: () => pageMeta({ title, description, path: "/contact" }),
   component: ContactPage,
 });
 
@@ -39,7 +30,7 @@ function ContactPage() {
             </p>
 
             <div className="mt-10 space-y-6 border-t border-border pt-8 text-[0.9375rem]">
-              <p className="font-serif text-xl text-primary">{SITE.name}</p>
+              <p className="font-display text-lg tracking-tight text-primary">{SITE.name}</p>
               <p className="flex items-start gap-3 text-ink">
                 <MapPin className="mt-0.5 size-5 shrink-0 text-secondary" aria-hidden="true" />
                 <span>

@@ -1,44 +1,35 @@
 import { Link } from "@tanstack/react-router";
+import logoBrand from "@/assets/agape-logo.png";
+import logoLight from "@/assets/agape-logo-light.png";
 
 /**
  * Brand lockup.
  *
- * TO USE THE OFFICIAL LOGO FILE: drop it in `src/assets/agape-logo.png`, then
- * replace the <span> lockup below with:
- *   import logo from "@/assets/agape-logo.png";
- *   <img src={logo} alt="Agape Home Assisted Living" className="h-11 w-auto" />
- * Nothing else needs to change.
+ * Two artwork variants, both trimmed from the supplied master (public/logo.png):
+ *   - `brand` — full colour, for light backgrounds (header, body sections).
+ *   - `light` — blues lifted toward white, for the deep-blue footer. The original
+ *     artwork is blue-on-blue there and all but disappears.
+ *
+ * Artwork is 900x297 (~3.03:1). Set the height via `className`; width follows.
  */
 export function Logo({
-  className = "",
+  className = "h-12 sm:h-14",
   tone = "brand",
 }: {
   className?: string;
   tone?: "brand" | "light";
 }) {
-  const primary = tone === "light" ? "text-white" : "text-primary";
-  const sub = tone === "light" ? "text-white/70" : "text-muted-foreground";
-
   return (
-    <Link
-      to="/"
-      className={`group inline-flex items-center gap-3 ${className}`}
-      aria-label="Agape Home Assisted Living — home"
-    >
-      <span
-        aria-hidden="true"
-        className={`flex h-10 w-10 shrink-0 items-center justify-center border ${
-          tone === "light" ? "border-white/30" : "border-primary/25"
-        }`}
-      >
-        <span className={`font-serif text-lg leading-none ${primary}`}>A</span>
-      </span>
-      <span className="flex flex-col leading-tight">
-        <span className={`font-serif text-[1.0625rem] tracking-tight ${primary}`}>Agape Home</span>
-        <span className={`text-[0.625rem] font-medium tracking-[0.16em] uppercase ${sub}`}>
-          Assisted Living
-        </span>
-      </span>
+    <Link to="/" className="inline-flex items-center" aria-label="Agape Home Assisted Living — home">
+      <img
+        src={tone === "light" ? logoLight : logoBrand}
+        alt="Agape Home Assisted Living — where care feels like family"
+        width={900}
+        height={297}
+        // max-w-none: Tailwind's preflight sets img { max-width: 100% }, which cycles
+        // against the shrink-to-fit Link inside the footer grid and halves the logo.
+        className={`w-auto max-w-none ${className}`}
+      />
     </Link>
   );
 }

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageMeta } from "@/lib/seo";
 import { PageHero } from "@/components/site/PageHero";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { Reveal } from "@/components/site/Reveal";
@@ -12,17 +13,7 @@ const description =
   "Learn about Agape Home Assisted Living in Laveen, Arizona — a residential care home built on compassion, respect, dignity and genuine relationships.";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:url", content: "/about" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: "/about" }],
-  }),
+  head: () => pageMeta({ title, description, path: "/about" }),
   component: AboutPage,
 });
 
@@ -80,7 +71,7 @@ function AboutPage() {
       </section>
 
       <section className="border-y border-border">
-        <Reveal className="relative">
+        <Reveal variant="settle" className="relative">
           <img
             src={storyImg}
             alt="An older man and his adult daughter laughing together over coffee at a wooden dining table"
@@ -92,7 +83,7 @@ function AboutPage() {
           <div className="absolute inset-0 bg-primary/55" aria-hidden="true" />
           <div className="absolute inset-0 flex items-center">
             <div className="mx-auto w-full max-w-7xl px-5 sm:px-8">
-              <p className="max-w-xl font-serif text-2xl leading-snug text-white sm:text-3xl">
+              <p className="max-w-xl text-2xl leading-snug font-medium text-white sm:text-3xl">
                 Familiar routines, favorite chairs, long conversations — the small things are the
                 things that make a house feel like home.
               </p>
@@ -106,7 +97,7 @@ function AboutPage() {
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <SectionHeading eyebrow="Our Mission" title="Our Mission" />
             <Reveal delay={80} className="space-y-5 text-[1.0625rem] leading-relaxed text-muted-foreground lg:pt-2">
-              <p className="border-l border-gold pl-6 font-serif text-xl leading-relaxed text-primary sm:text-2xl">
+              <p className="border-l border-gold pl-6 text-xl leading-relaxed text-primary sm:text-2xl">
                 Our mission is to provide compassionate and respectful assisted living services in a
                 home environment where residents feel valued, heard, supported, and cared for.
               </p>
