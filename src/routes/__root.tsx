@@ -11,24 +11,26 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Header } from "@/components/site/Header";
+import { Footer } from "@/components/site/Footer";
+import { buttonStyles } from "@/components/site/Buttons";
+import { SITE } from "@/lib/site";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
-          </Link>
-        </div>
+    <div className="mx-auto flex min-h-[60vh] max-w-2xl flex-col justify-center px-5 py-24 text-center sm:px-8">
+      <p className="eyebrow">404</p>
+      <h1 className="mt-5 text-4xl sm:text-5xl">Page Not Found</h1>
+      <p className="mt-5 text-[1.0625rem] leading-relaxed text-muted-foreground">
+        The page you're looking for may have moved or no longer exists.
+      </p>
+      <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <Link to="/" className={buttonStyles.primary}>
+          Return Home
+        </Link>
+        <Link to="/contact" className={buttonStyles.outline}>
+          Contact Agape Home
+        </Link>
       </div>
     </div>
   );
@@ -42,31 +44,24 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
-        </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button
-            onClick={() => {
-              router.invalidate();
-              reset();
-            }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Try again
-          </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
-            Go home
-          </a>
-        </div>
+    <div className="mx-auto flex min-h-[60vh] max-w-2xl flex-col justify-center px-5 py-24 text-center sm:px-8">
+      <h1 className="text-3xl sm:text-4xl">This page didn't load</h1>
+      <p className="mt-4 text-[1.0625rem] text-muted-foreground">
+        Something went wrong on our end. You can try again or head back home.
+      </p>
+      <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <button
+          onClick={() => {
+            router.invalidate();
+            reset();
+          }}
+          className={buttonStyles.primary}
+        >
+          Try again
+        </button>
+        <a href="/" className={buttonStyles.outline}>
+          Go home
+        </a>
       </div>
     </div>
   );
@@ -77,21 +72,46 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Agape Home Assisted Living | Laveen, AZ" },
+      {
+        name: "description",
+        content:
+          "Agape Home Assisted Living is a residential assisted living home in Laveen, Arizona offering compassionate, resident-centered care.",
+      },
+      { property: "og:site_name", content: SITE.name },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "theme-color", content: "#164A8A" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@400;500;600&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "AssistedLiving",
+          name: SITE.name,
+          slogan: SITE.tagline,
+          email: SITE.email,
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: SITE.street,
+            addressLocality: SITE.city,
+            addressRegion: SITE.state,
+            addressCountry: "US",
+          },
+          areaServed: "Laveen, Arizona",
+        }),
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -119,8 +139,18 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-100 focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:text-white"
+      >
+        Skip to main content
+      </a>
+      <Header />
+      <main id="main">
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+      </main>
+      <Footer />
     </QueryClientProvider>
   );
 }
