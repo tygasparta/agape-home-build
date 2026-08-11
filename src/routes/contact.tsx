@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { pageMeta } from "@/lib/seo";
-import { Mail, MapPin, ExternalLink } from "lucide-react";
+import { Mail, MapPin, Phone, ExternalLink } from "lucide-react";
 import { ContactForm } from "@/components/site/ContactForm";
 import { Reveal } from "@/components/site/Reveal";
 import { AnchorButton, LinkButton } from "@/components/site/Buttons";
 import { ScheduleVisitSection } from "@/components/site/ScheduleVisitSection";
 import { LocationSection } from "@/components/site/LocationSection";
-import { MAPS_DIRECTIONS, SITE } from "@/lib/site";
+import { MAPS_DIRECTIONS, SITE, telHref } from "@/lib/site";
 
 const title = "Contact Agape Home Assisted Living | Laveen, AZ";
 const description =
@@ -39,6 +39,14 @@ function ContactPage() {
                   {SITE.city}, {SITE.state}
                 </span>
               </p>
+              {SITE.phones.map((number) => (
+                <p key={number} className="flex items-start gap-3">
+                  <Phone className="mt-0.5 size-5 shrink-0 text-secondary" aria-hidden="true" />
+                  <a href={telHref(number)} className="text-ink underline-offset-4 hover:underline">
+                    {number}
+                  </a>
+                </p>
+              ))}
               <p className="flex items-start gap-3">
                 <Mail className="mt-0.5 size-5 shrink-0 text-secondary" aria-hidden="true" />
                 <a href={`mailto:${SITE.email}`} className="break-all text-ink underline-offset-4 hover:underline">

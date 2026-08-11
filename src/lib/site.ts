@@ -1,3 +1,5 @@
+const PHONES = ["+1 (623) 217-1891", "+1 (818) 272-1507"] as const;
+
 export const SITE = {
   /**
    * Canonical origin — no trailing slash, and no `www`: the www host 302s here,
@@ -15,9 +17,20 @@ export const SITE = {
   email: "agapehomeassistedhomeliving@gmail.com",
   /** Add real profile URLs here to display social links in the footer. */
   social: [] as { label: string; href: string }[],
-  /** Add a phone number here to enable the "Call Us" action site-wide. */
-  phone: "" as string,
+  /**
+   * Contact numbers, primary first. Rendered in full wherever there is room
+   * (footer, contact page, mobile menu, schedule section); the header bars are
+   * width-constrained and show `phone` only.
+   */
+  phones: PHONES,
+  /** Primary number, for the places only one will fit. */
+  phone: PHONES[0] as string,
 } as const;
+
+/** `tel:` href from a display-formatted number — strips spaces, brackets, dashes. */
+export function telHref(number: string): string {
+  return `tel:${number.replace(/[^+\d]/g, "")}`;
+}
 
 export const MAPS_QUERY = encodeURIComponent(`${SITE.street}, ${SITE.city}, ${SITE.state}`);
 export const MAPS_EMBED = `https://www.google.com/maps?q=${MAPS_QUERY}&output=embed`;

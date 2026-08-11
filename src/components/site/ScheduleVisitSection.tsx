@@ -1,6 +1,6 @@
 import { VisitRequestForm } from "./VisitRequestForm";
 import { Reveal } from "./Reveal";
-import { CARE_DISCLAIMER, SITE } from "@/lib/site";
+import { CARE_DISCLAIMER, SITE, telHref } from "@/lib/site";
 
 export function ScheduleVisitSection() {
   return (
@@ -20,6 +20,21 @@ export function ScheduleVisitSection() {
               <dt className="text-white/50">Location</dt>
               <dd className="mt-1 text-white">{SITE.addressLine}</dd>
             </div>
+            {SITE.phones.length > 0 ? (
+              <div>
+                <dt className="text-white/50">Phone</dt>
+                {SITE.phones.map((number) => (
+                  <dd key={number} className="mt-1">
+                    <a
+                      href={telHref(number)}
+                      className="text-white underline-offset-4 hover:underline"
+                    >
+                      {number}
+                    </a>
+                  </dd>
+                ))}
+              </div>
+            ) : null}
             <div>
               <dt className="text-white/50">Email</dt>
               <dd className="mt-1 break-all">

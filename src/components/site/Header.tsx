@@ -3,10 +3,9 @@ import { Mail, Phone, MapPin, ArrowUpRight } from "lucide-react";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Logo } from "./Logo";
 import { MenuToggle } from "./MenuToggle";
-import { NAV, SITE, MAPS_DIRECTIONS } from "@/lib/site";
+import { NAV, SITE, MAPS_DIRECTIONS, telHref } from "@/lib/site";
 import { LinkButton } from "./Buttons";
 
-const telHref = SITE.phone ? `tel:${SITE.phone.replace(/[^+\d]/g, "")}` : null;
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -71,9 +70,9 @@ export function Header() {
             </a>
 
             <div className="flex items-center gap-5">
-              {telHref ? (
+              {SITE.phone ? (
                 <a
-                  href={telHref}
+                  href={telHref(SITE.phone)}
                   className="inline-flex items-center gap-2 font-medium text-white transition-colors hover:text-gold"
                 >
                   <Phone className="size-3.5 shrink-0" aria-hidden="true" />
@@ -125,10 +124,15 @@ export function Header() {
             </nav>
 
             <div className="hidden items-center gap-4 lg:flex">
-              {telHref ? (
+              {/*
+                xl and up only: at lg the seven nav links, logo and CTA leave
+                too little room, and the utility bar above already shows this
+                number at every width.
+              */}
+              {SITE.phone ? (
                 <a
-                  href={telHref}
-                  className="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-secondary"
+                  href={telHref(SITE.phone)}
+                  className="hidden min-h-11 items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-secondary xl:inline-flex"
                 >
                   <Phone className="size-4" aria-hidden="true" />
                   {SITE.phone}
@@ -211,15 +215,16 @@ export function Header() {
               </LinkButton>
 
               <div className="grid grid-cols-1 gap-2 pt-2 text-sm">
-                {telHref ? (
+                {SITE.phones.map((number) => (
                   <a
-                    href={telHref}
+                    key={number}
+                    href={telHref(number)}
                     className="inline-flex min-h-11 items-center gap-3 text-white transition-colors hover:text-gold"
                   >
                     <Phone className="size-4 shrink-0 text-white/50" aria-hidden="true" />
-                    {SITE.phone}
+                    {number}
                   </a>
-                ) : null}
+                ))}
                 <a
                   href={`mailto:${SITE.email}`}
                   className="inline-flex min-h-11 items-center gap-3 break-all text-white/85 transition-colors hover:text-white"

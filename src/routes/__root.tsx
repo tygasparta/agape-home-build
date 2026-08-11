@@ -124,9 +124,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               logo: absoluteUrl("/logo.png"),
               image: absoluteUrl(OG_IMAGE),
               email: SITE.email,
-              // Only emit telephone once a real number exists — an empty or
-              // invented value is worse than omitting the property.
-              ...(SITE.phone ? { telephone: SITE.phone } : {}),
+              // schema.org allows repeated telephone values; the primary is
+              // listed first. Omitted entirely if no number is configured.
+              ...(SITE.phones.length ? { telephone: [...SITE.phones] } : {}),
               address: {
                 "@type": "PostalAddress",
                 streetAddress: SITE.street,
