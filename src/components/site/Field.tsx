@@ -11,9 +11,9 @@ export function Field({
   children,
 }: {
   label: string;
-  error?: string;
-  required?: boolean;
-  hint?: string;
+  error?: string | undefined;
+  required?: boolean | undefined;
+  hint?: string | undefined;
   children: (props: {
     id: string;
     describedBy: string | undefined;
