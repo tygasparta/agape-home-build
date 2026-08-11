@@ -14,7 +14,12 @@ export function Field({
   error?: string;
   required?: boolean;
   hint?: string;
-  children: (props: { id: string; describedBy?: string; invalid: boolean; className: string }) => ReactNode;
+  children: (props: {
+    id: string;
+    describedBy: string | undefined;
+    invalid: boolean;
+    className: string;
+  }) => ReactNode;
 }) {
   const id = useId();
   const errorId = `${id}-error`;
