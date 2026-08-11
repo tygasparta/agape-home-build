@@ -12,7 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as CareRouteImport } from './routes/care'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ForFamiliesRouteImport } from './routes/for-families'
 import { Route as OurApproachRouteImport } from './routes/our-approach'
+import { Route as OurHomeRouteImport } from './routes/our-home'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -29,9 +32,24 @@ const CareRoute = CareRouteImport.update({
   path: '/care',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForFamiliesRoute = ForFamiliesRouteImport.update({
+  id: '/for-families',
+  path: '/for-families',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OurApproachRoute = OurApproachRouteImport.update({
   id: '/our-approach',
   path: '/our-approach',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OurHomeRoute = OurHomeRouteImport.update({
+  id: '/our-home',
+  path: '/our-home',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -39,34 +57,68 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/care': typeof CareRoute
+  '/contact': typeof ContactRoute
+  '/for-families': typeof ForFamiliesRoute
   '/our-approach': typeof OurApproachRoute
+  '/our-home': typeof OurHomeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/care': typeof CareRoute
+  '/contact': typeof ContactRoute
+  '/for-families': typeof ForFamiliesRoute
   '/our-approach': typeof OurApproachRoute
+  '/our-home': typeof OurHomeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/care': typeof CareRoute
+  '/contact': typeof ContactRoute
+  '/for-families': typeof ForFamiliesRoute
   '/our-approach': typeof OurApproachRoute
+  '/our-home': typeof OurHomeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/care' | '/our-approach'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/care'
+    | '/contact'
+    | '/for-families'
+    | '/our-approach'
+    | '/our-home'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/care' | '/our-approach'
-  id: '__root__' | '/' | '/about' | '/care' | '/our-approach'
+  to:
+    | '/'
+    | '/about'
+    | '/care'
+    | '/contact'
+    | '/for-families'
+    | '/our-approach'
+    | '/our-home'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/care'
+    | '/contact'
+    | '/for-families'
+    | '/our-approach'
+    | '/our-home'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   CareRoute: typeof CareRoute
+  ContactRoute: typeof ContactRoute
+  ForFamiliesRoute: typeof ForFamiliesRoute
   OurApproachRoute: typeof OurApproachRoute
+  OurHomeRoute: typeof OurHomeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -92,11 +144,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/for-families': {
+      id: '/for-families'
+      path: '/for-families'
+      fullPath: '/for-families'
+      preLoaderRoute: typeof ForFamiliesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/our-approach': {
       id: '/our-approach'
       path: '/our-approach'
       fullPath: '/our-approach'
       preLoaderRoute: typeof OurApproachRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/our-home': {
+      id: '/our-home'
+      path: '/our-home'
+      fullPath: '/our-home'
+      preLoaderRoute: typeof OurHomeRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -106,7 +179,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   CareRoute: CareRoute,
+  ContactRoute: ContactRoute,
+  ForFamiliesRoute: ForFamiliesRoute,
   OurApproachRoute: OurApproachRoute,
+  OurHomeRoute: OurHomeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
