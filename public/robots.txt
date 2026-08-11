@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.agapehomeassistedliving.com/sitemap.xml
+Sitemap: https://agapehomeassistedliving.org/sitemap.xml
