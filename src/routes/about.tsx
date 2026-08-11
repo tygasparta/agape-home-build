@@ -5,7 +5,7 @@ import { SectionHeading } from "@/components/site/SectionHeading";
 import { Reveal } from "@/components/site/Reveal";
 import { LinkButton } from "@/components/site/Buttons";
 import { ScheduleVisitSection } from "@/components/site/ScheduleVisitSection";
-import storyImg from "@/assets/family-conversation.jpg";
+import storyImg from "@/assets/home-private-room.jpg";
 import { CARE_DISCLAIMER } from "@/lib/site";
 
 const title = "About Agape Home | Residential Assisted Living in Laveen, AZ";
@@ -74,7 +74,7 @@ function AboutPage() {
         <Reveal variant="settle" className="relative">
           <img
             src={storyImg}
-            alt="An older man and his adult daughter laughing together over coffee at a wooden dining table"
+            alt="A private resident room at Agape Home with a bed, recliner, dresser and television"
             width={1400}
             height={1050}
             loading="lazy"

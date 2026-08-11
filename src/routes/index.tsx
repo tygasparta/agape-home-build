@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { pageMeta } from "@/lib/seo";
 import { HeartHandshake, Home, UserRound, Users, ArrowRight } from "lucide-react";
-import heroImg from "@/assets/hero-care.jpg";
-import introImg from "@/assets/home-living.jpg";
+import heroImg from "@/assets/home-great-room.jpg";
+import introImg from "@/assets/home-dining-table.jpg";
 import { LinkButton } from "@/components/site/Buttons";
 import { Reveal, Rise } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
@@ -90,7 +90,7 @@ function Index() {
           <Rise variant="settle" delay={220} className="lg:justify-self-end">
             <img
               src={heroImg}
-              alt="A caregiver sitting beside an older woman in a sunlit living room, holding her hand and talking warmly"
+              alt="The open living and dining area at Agape Home, with sofas, a shared dining table and natural light"
               width={1600}
               height={1200}
               fetchPriority="high"
@@ -126,7 +126,7 @@ function Index() {
           <Reveal variant="settle" className="order-2 lg:order-1">
             <img
               src={introImg}
-              alt="Warm living room with soft sofas and natural light inside a residential care home"
+              alt="The dining table at Agape Home set beside the living room sofas"
               width={1400}
               height={1050}
               loading="lazy"

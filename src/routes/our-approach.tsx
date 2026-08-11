@@ -5,7 +5,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { LinkButton } from "@/components/site/Buttons";
 import { ScheduleVisitSection } from "@/components/site/ScheduleVisitSection";
-import approachImg from "@/assets/home-bedroom.jpg";
+import approachImg from "@/assets/home-bathroom.jpg";
 import { CARE_DISCLAIMER } from "@/lib/site";
 
 const title = "Our Approach to Care | Agape Home Assisted Living, Laveen AZ";
@@ -60,7 +60,7 @@ function ApproachPage() {
           </>
         }
         image={approachImg}
-        imageAlt="A comfortable private bedroom with soft linens, a reading chair and family photographs"
+        imageAlt="An accessible bathroom at Agape Home with a walk-in shower, grab rail and shower chair"
       />
 
       <section className="py-20 sm:py-24">

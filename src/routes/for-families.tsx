@@ -5,7 +5,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { LinkButton } from "@/components/site/Buttons";
 import { ScheduleVisitSection } from "@/components/site/ScheduleVisitSection";
-import familyImg from "@/assets/family-conversation.jpg";
+import familyImg from "@/assets/home-shared-room.jpg";
 import { CARE_DISCLAIMER } from "@/lib/site";
 
 const title = "For Families | Agape Home Assisted Living, Laveen AZ";
@@ -44,7 +44,7 @@ function FamiliesPage() {
         title="Peace of Mind Begins With Trust"
         intro="We understand that choosing an assisted living home is an important decision. Families want to know that their loved ones are being treated with care, respect, and compassion."
         image={familyImg}
-        imageAlt="An older man and his adult daughter talking and laughing together over coffee at home"
+        imageAlt="A shared resident room at Agape Home with two made beds and a recliner by the window"
       />
 
       <section className="py-20 sm:py-24">
