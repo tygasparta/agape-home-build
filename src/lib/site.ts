@@ -42,9 +42,15 @@ export const NAV = [
   { to: "/our-approach", label: "Our Approach" },
   { to: "/care", label: "Care" },
   { to: "/our-home", label: "Our Home" },
+  // Short label on purpose: "ALTCS" is the term families actually search for,
+  // and the desktop bar has no room for the full page title.
+  { to: "/altcs-and-private-pay", label: "ALTCS" },
   { to: "/for-families", label: "Families" },
   { to: "/contact", label: "Contact" },
 ] as const;
+
+/** Payment routes accepted — surfaced in JSON-LD as paymentAccepted. */
+export const PAYMENT_ACCEPTED = "ALTCS (Arizona Long Term Care System), Private Pay";
 
 export const CARE_DISCLAIMER =
   "Care and services are provided according to each resident's individual needs, care plan, authorized services, and applicable requirements.";

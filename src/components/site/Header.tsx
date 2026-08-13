@@ -116,7 +116,7 @@ export function Header() {
                   key={item.to}
                   to={item.to}
                   data-active={pathname === item.to}
-                  className="nav-underline py-1 text-[0.9375rem] text-ink/75 transition-colors hover:text-primary data-[active=true]:font-medium data-[active=true]:text-primary"
+                  className="nav-underline py-1 text-[0.9375rem] whitespace-nowrap text-ink/75 transition-colors hover:text-primary data-[active=true]:font-medium data-[active=true]:text-primary"
                 >
                   {item.label}
                 </Link>

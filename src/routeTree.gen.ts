@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AccessibilityRouteImport } from './routes/accessibility'
+import { Route as AltcsAndPrivatePayRouteImport } from './routes/altcs-and-private-pay'
 import { Route as CareRouteImport } from './routes/care'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ForFamiliesRouteImport } from './routes/for-families'
@@ -32,6 +33,11 @@ const AboutRoute = AboutRouteImport.update({
 const AccessibilityRoute = AccessibilityRouteImport.update({
   id: '/accessibility',
   path: '/accessibility',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AltcsAndPrivatePayRoute = AltcsAndPrivatePayRouteImport.update({
+  id: '/altcs-and-private-pay',
+  path: '/altcs-and-private-pay',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CareRoute = CareRouteImport.update({
@@ -69,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/accessibility': typeof AccessibilityRoute
+  '/altcs-and-private-pay': typeof AltcsAndPrivatePayRoute
   '/care': typeof CareRoute
   '/contact': typeof ContactRoute
   '/for-families': typeof ForFamiliesRoute
@@ -80,6 +87,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/accessibility': typeof AccessibilityRoute
+  '/altcs-and-private-pay': typeof AltcsAndPrivatePayRoute
   '/care': typeof CareRoute
   '/contact': typeof ContactRoute
   '/for-families': typeof ForFamiliesRoute
@@ -92,6 +100,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/accessibility': typeof AccessibilityRoute
+  '/altcs-and-private-pay': typeof AltcsAndPrivatePayRoute
   '/care': typeof CareRoute
   '/contact': typeof ContactRoute
   '/for-families': typeof ForFamiliesRoute
@@ -105,6 +114,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/accessibility'
+    | '/altcs-and-private-pay'
     | '/care'
     | '/contact'
     | '/for-families'
@@ -116,6 +126,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/accessibility'
+    | '/altcs-and-private-pay'
     | '/care'
     | '/contact'
     | '/for-families'
@@ -127,6 +138,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/accessibility'
+    | '/altcs-and-private-pay'
     | '/care'
     | '/contact'
     | '/for-families'
@@ -139,6 +151,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AccessibilityRoute: typeof AccessibilityRoute
+  AltcsAndPrivatePayRoute: typeof AltcsAndPrivatePayRoute
   CareRoute: typeof CareRoute
   ContactRoute: typeof ContactRoute
   ForFamiliesRoute: typeof ForFamiliesRoute
@@ -168,6 +181,13 @@ declare module '@tanstack/react-router' {
       path: '/accessibility'
       fullPath: '/accessibility'
       preLoaderRoute: typeof AccessibilityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/altcs-and-private-pay': {
+      id: '/altcs-and-private-pay'
+      path: '/altcs-and-private-pay'
+      fullPath: '/altcs-and-private-pay'
+      preLoaderRoute: typeof AltcsAndPrivatePayRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/care': {
@@ -219,6 +239,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AccessibilityRoute: AccessibilityRoute,
+  AltcsAndPrivatePayRoute: AltcsAndPrivatePayRoute,
   CareRoute: CareRoute,
   ContactRoute: ContactRoute,
   ForFamiliesRoute: ForFamiliesRoute,

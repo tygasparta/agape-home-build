@@ -15,7 +15,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { buttonStyles } from "@/components/site/Buttons";
-import { SITE, MAPS_DIRECTIONS } from "@/lib/site";
+import { SITE, MAPS_DIRECTIONS, PAYMENT_ACCEPTED } from "@/lib/site";
 import { absoluteUrl, OG_IMAGE } from "@/lib/seo";
 
 function NotFoundComponent() {
@@ -135,6 +135,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
                 addressCountry: "US",
               },
               hasMap: MAPS_DIRECTIONS,
+              paymentAccepted: PAYMENT_ACCEPTED,
               areaServed: {
                 "@type": "City",
                 name: "Laveen",
